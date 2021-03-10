@@ -1,14 +1,14 @@
 import { useState } from 'react'
 import logo from './logo.svg'
 import './App.css'
-import Home from './pages/home'
+import Home from './pages/Home'
 import GifInfo from './pages/GifInfo'
-import GifList from './components/GifList'
-import { Route, useLocation } from 'wouter'
+import GifResults from './pages/GifResults'
+import { Link, Route, useLocation } from 'wouter'
 
 function App() {
   const [keyword, setKeyword] = useState("")
-  const [location, setLocation] = useLocation()
+  const [, setLocation] = useLocation()
 
   const handleSubmit = e => {
     e.preventDefault()
@@ -22,7 +22,11 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+        <Link to="/">
+          <div>
+            <img src={logo} className="App-logo" alt="logo" />
+          </div>
+        </Link>
         <form onSubmit={handleSubmit}>
           <input onChange={handleChange} value={keyword} />
         </form>
@@ -31,7 +35,7 @@ function App() {
           path="/"
         />
         <Route
-          component={GifList} 
+          component={GifResults} 
           path="/:keyword"
         />
         <Route
