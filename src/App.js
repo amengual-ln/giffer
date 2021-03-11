@@ -4,6 +4,7 @@ import './App.css'
 import Home from './pages/Home'
 import GifInfo from './pages/GifInfo'
 import GifResults from './pages/GifResults'
+import {GifsContextProvider} from './context/GifsContext'
 import { Link, Route, useLocation } from 'wouter'
 
 function App() {
@@ -12,7 +13,7 @@ function App() {
 
   const handleSubmit = e => {
     e.preventDefault()
-    setLocation(keyword)
+    setLocation(`/${keyword}`)
   }
 
   const handleChange = e => {
@@ -30,18 +31,20 @@ function App() {
         <form onSubmit={handleSubmit}>
           <input onChange={handleChange} value={keyword} />
         </form>
-        <Route
-          component={Home} 
-          path="/"
-        />
-        <Route
-          component={GifResults} 
-          path="/:keyword"
-        />
-        <Route
-          component={GifInfo} 
-          path="/:keyword/:id"
-        />
+        <GifsContextProvider>
+          <Route
+            component={Home} 
+            path="/"
+          />
+          <Route
+            component={GifResults} 
+            path="/:keyword"
+          />
+          <Route
+            component={GifInfo} 
+            path="/gif/:id"
+          />
+        </GifsContextProvider>
       </header>
     </div>
   );

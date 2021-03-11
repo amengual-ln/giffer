@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import fetchGifs from '../services/fetchGifs'
+import GifsContext from '../context/GifsContext'
 
 export default function useGifs({ keyword }) {
     const [loading, setLoading] = useState(false)
-    const [gifs, setGifs] = useState([])
+    const {gifs, setGifs} = useContext(GifsContext)
 
     useEffect(function() {
         setLoading(true)
@@ -12,6 +13,6 @@ export default function useGifs({ keyword }) {
                 setGifs(gifs)
                 setLoading(false)
             })
-    }, [keyword])
+    }, [keyword, setGifs])
     return { loading, gifs }
 }
