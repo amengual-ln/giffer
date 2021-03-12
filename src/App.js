@@ -1,11 +1,13 @@
-import { useState } from 'react'
+import React, { useState, Suspense } from 'react'
 import logo from './logo.svg'
 import './App.css'
-import Home from './pages/Home'
-import GifInfo from './pages/GifInfo'
-import GifResults from './pages/GifResults'
+
 import {GifsContextProvider} from './context/GifsContext'
 import { Link, Route, useLocation } from 'wouter'
+
+const Home = React.lazy(() => import('./pages/Home'))
+const GifResults = React.lazy(() => import('./pages/GifResults'))
+const GifInfo = React.lazy(() => import('./pages/GifInfo'))
 
 function App() {
   const [keyword, setKeyword] = useState("")
@@ -22,30 +24,32 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
-        <Link to="/">
-          <div>
-            <img src={logo} className="App-logo" alt="logo" />
-          </div>
-        </Link>
-        <form onSubmit={handleSubmit}>
-          <input onChange={handleChange} value={keyword} />
-        </form>
-        <GifsContextProvider>
-          <Route
-            component={Home} 
-            path="/"
-          />
-          <Route
-            component={GifResults} 
-            path="/:keyword"
-          />
-          <Route
-            component={GifInfo} 
-            path="/gif/:id"
-          />
-        </GifsContextProvider>
-      </header>
+      <Suspense fallback={null}>
+        <section className="App-header">
+          <Link to="/">
+            <div>
+              <img src={logo} className="App-logo" alt="logo" />
+            </div>
+          </Link>
+          <form onSubmit={handleSubmit}>
+            <input onChange={handleChange} value={keyword} />
+          </form>
+          <GifsContextProvider>
+            <Route
+              component={Home} 
+              path="/"
+            />
+            <Route
+              component={GifResults} 
+              path="/:keyword"
+            />
+            <Route
+              component={GifInfo} 
+              path="/gif/:id"
+            />
+          </GifsContextProvider>
+        </section>
+      </Suspense>
     </div>
   );
 }
