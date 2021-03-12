@@ -1,26 +1,24 @@
-import React, { useState, Suspense } from 'react'
-import logo from './logo.svg'
-import './App.css'
+import React, { Suspense, useCallback } from "react";
+import logo from "./logo.svg";
+import "./App.css";
 
-import {GifsContextProvider} from './context/GifsContext'
-import { Link, Route, useLocation } from 'wouter'
+import { GifsContextProvider } from "./context/GifsContext";
+import { Link, Route, useLocation } from "wouter";
+import SearchForm from "./components/SearchForm";
 
-const Home = React.lazy(() => import('./pages/Home'))
-const GifResults = React.lazy(() => import('./pages/GifResults'))
-const GifInfo = React.lazy(() => import('./pages/GifInfo'))
+const Home = React.lazy(() => import("./pages/Home"));
+const GifResults = React.lazy(() => import("./pages/GifResults"));
+const GifInfo = React.lazy(() => import("./pages/GifInfo"));
 
 function App() {
-  const [keyword, setKeyword] = useState("")
-  const [, setLocation] = useLocation()
+  const [, setLocation] = useLocation();
 
-  const handleSubmit = e => {
-    e.preventDefault()
-    setLocation(`/${keyword}`)
-  }
-
-  const handleChange = e => {
-    setKeyword(e.target.value)
-  }
+  const handleSubmit = useCallback(
+    ({ keyword }) => {
+      setLocation(`/${keyword}`);
+    },
+    [setLocation]
+  );
 
   return (
     <div className="App">
@@ -31,22 +29,11 @@ function App() {
               <img src={logo} className="App-logo" alt="logo" />
             </div>
           </Link>
-          <form onSubmit={handleSubmit}>
-            <input onChange={handleChange} value={keyword} />
-          </form>
+          <SearchForm onSubmit={handleSubmit} />
           <GifsContextProvider>
-            <Route
-              component={Home} 
-              path="/"
-            />
-            <Route
-              component={GifResults} 
-              path="/:keyword"
-            />
-            <Route
-              component={GifInfo} 
-              path="/gif/:id"
-            />
+            <Route component={Home} path="/" />
+            <Route component={GifResults} path="/:keyword" />
+            <Route component={GifInfo} path="/gif/:id" />
           </GifsContextProvider>
         </section>
       </Suspense>
