@@ -34,6 +34,7 @@ function App() {
             <Route component={Home} path="/" />
             <Route component={GifResults} path="/:keyword" />
             <Route component={GifInfo} path="/gif/:id" />
+            <Route component={() => <h1>oops! 404</h1>} path="/oops/404" />
           </GifsContextProvider>
         </section>
       </Suspense>
